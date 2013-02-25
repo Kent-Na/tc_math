@@ -67,7 +67,8 @@ namespace cd{
 		//Result will be overwriten in *data 
 		void execute(double* data){
 			complex* c_data = (complex*)data;
-			base.execute(c_data);
+			if (!inverse)
+				base.execute(c_data);
 			const size_t size = 1<<n;
 			const size_t half_size = size/2;
 			const size_t quarter_size = size/4;
@@ -84,7 +85,10 @@ namespace cd{
 			{
 				const complex c0 = c_data[0];
 				c_data[0].re = c0.re+c0.im;
-				c_data[0].im = c0.re-c0.im;
+				if (inverse)
+					c_data[0].im = -c0.re+c0.im;
+				else
+					c_data[0].im = c0.re-c0.im;
 			}
 
 			for (size_t i=1; i<quarter_size; i++){
@@ -95,6 +99,12 @@ namespace cd{
 				c_data[half_size-i] = 
 					c1-(0.5+imaginary(0.5)*w(half_size-i))*
 					(c1-c0.conjugate());
+			}
+
+			if (inverse){
+				base.execute(c_data);
+				for (size_t i=0; i<half_size; i++)
+					c_data[i] = c_data[i].conjugate();
 			}
 		}
 	};
