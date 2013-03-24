@@ -108,4 +108,98 @@ namespace cd{
 			}
 		}
 	};
+	template <size_t n, bool inverse = false>
+	struct complex_fft{
+		complex_fft_n2<n, inverse> fft;
+		complex_fft_n2<n, !inverse> ifft;
+		complex work_buffer[1<<n];
+		complex signal_buffer[1<<n];
+
+		void execute(complex* data, size_t size){
+			const size_t base_size = 1<<n;
+
+			if (size>base_size/2){
+				printf("faili\n");
+				return;
+			}
+
+			auto w = [size](double x)->complex{
+				const double theta = x*2*M_PI/size;
+				if (inverse)
+					return complex(cos(theta),-sin(theta));
+				else
+					return complex(cos(theta),sin(theta));
+			};
+			for (int i= 0; i<size; i++)
+				signal_buffer[i]=data[i]*w(i*i/2.0);
+			for (int i= size; i<base_size; i++)
+				signal_buffer[i] = 0;
+
+			for (int i= 0; i<base_size; i++)
+				work_buffer[i] = 0;
+			for (int i= 0; i<size; i++){
+				work_buffer[i] = w(-i*i/2.0);
+				if (i!=0)
+				work_buffer[base_size-i]=w(-i*i/2.0);
+			}
+
+			fft.execute(work_buffer);
+			fft.execute(signal_buffer);
+
+			for (int i= 0; i<base_size; i++)
+				work_buffer[i] = signal_buffer[i]*work_buffer[i];
+
+			ifft.execute(work_buffer);
+
+			for (int i= 0; i<base_size; i++)
+				work_buffer[i] = work_buffer[i]*w(i*i/2.0);
+			for (int i= 0; i<size; i++)
+				data[i]=work_buffer[i];
+		}
+	};
+
+	template <bool inverse = false>
+	struct slow_fft{
+
+		void execute(complex* data_in, complex* data_out, size_t size){
+			auto w = [size](double x)->complex{
+				const double theta = x*2*M_PI/size;
+				if (inverse)
+					return complex(cos(theta),-sin(theta));
+				else
+					return complex(cos(theta),sin(theta));
+			};
+			for (int i=0; i<size; i++){
+				complex tmp = 0;
+				for (int j=0; j<size; j++){
+					tmp = tmp+data_in[j]*w(i*j);
+				}
+				data_out[i] = tmp;
+			}
+		}
+		void execute(double* data_in, complex* data_out, size_t size){
+			complex* c_data_in = new complex[size];
+			for (int i=0; i<size; i++){
+				c_data_in[i] = data_in[i];
+			}
+			execute(c_data_in, data_out, size);
+			delete[] c_data_in;
+		}
+	};
+	/*
+	template <size_t n>
+	struct complex_fft{
+		complex_fft_n2<> base_fft;
+		complex chirp[n];
+		complex_fft(size_t size){
+			for ()
+
+		}
+
+		void execute(complex* data){
+
+		}
+
+	};
+	*/
 }
