@@ -20,7 +20,7 @@ namespace cd{
 		delete[] data2;
 	}
 
-	double gaussian(double x, double a){
+	inline double gaussian(double x, double a){
 		return sqrt(a/M_PI)*pow(M_E, -a*x*x);
 	}
 
@@ -67,7 +67,7 @@ namespace cd{
 		}
 	}
 
-	void gaussian_lpf(double *data, size_t size, double a){
+	inline void gaussian_lpf(double *data, size_t size, double a){
 		double *out = new double[size];
 		for (int i=0; i<(int)size; i++){
 			double tmp = 0;

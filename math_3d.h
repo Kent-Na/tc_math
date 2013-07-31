@@ -59,7 +59,7 @@ namespace cd{
 	}
 
 	inline vector3 operator + (const vector3 &l){
-		return vector3(-l.v0, -l.v1, -l.v2);
+		return vector3(+l.v0, +l.v1, +l.v2);
 	}
 
 	inline vector3 operator * (const vector3 &l, const double &r){
