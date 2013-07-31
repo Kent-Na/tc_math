@@ -28,6 +28,9 @@ namespace cd{
 		complex conjugate() const{
 			return complex(re, -im);
 		}
+		double magnitude() const{
+			return sqrt(re*re+im*im);
+		}
 		void print() const{
 			printf("%e+%ei\n", re, im);
 		}
@@ -50,7 +53,7 @@ namespace cd{
 	}
 
 	inline complex& operator += (complex &l, const complex &r){
-		return l = l+r;
+		return (l = (l+r));
 	}
 
 	inline complex operator - (const complex &l, const complex &r){
@@ -74,5 +77,12 @@ namespace cd{
 	}
 	inline complex operator * (const imaginary &l, const complex &r){
 		return r*l;
+	}
+
+	inline complex& operator *= (complex &l, const complex &r){
+		return (l = (l*r));
+	}
+	inline complex& operator *= (complex &l, const double &r){
+		return (l = (l*r));
 	}
 }

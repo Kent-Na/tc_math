@@ -27,6 +27,13 @@ namespace cd{
 		}
 	}
 
+	void imag_part(complex* data, size_t size){
+		double *r_data = (double*)data;
+		for (size_t i = 0; i<size; i++){
+			r_data[i]=data[i].im;
+		}
+	}
+
 	void magnitude(complex* data, size_t size){
 		double *r_data = (double*)data;
 		for (size_t i = 0; i<size; i++){
@@ -94,5 +101,16 @@ namespace cd{
 		memcpy(data, out, size*sizeof(double));
 		delete[] out;
 		return;
+	}
+
+	void threshold(
+			double *data_in, uint8_t *data_out, 
+			double value, size_t size){
+		for (int i= 0; i<size; i++){
+			if (data_in[i]>value)
+				data_out[i] = 0xff;
+			else
+				data_out[i] = 0x00;
+		}
 	}
 }
