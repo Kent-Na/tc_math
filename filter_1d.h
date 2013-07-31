@@ -20,6 +20,21 @@ namespace cd{
 		delete[] data2;
 	}
 
+	inline void real_part(complex* data, size_t size){
+		double *r_data = (double*)data;
+		for (size_t i = 0; i<size; i++){
+			r_data[i]=data[i].re;
+		}
+	}
+
+	inline void magnitude(complex* data, size_t size){
+		double *r_data = (double*)data;
+		for (size_t i = 0; i<size; i++){
+			r_data[i]=sqrt(data[i].re*data[i].re*
+					data[i].im*data[i].im);
+		}
+	}
+
 	inline double gaussian(double x, double a){
 		return sqrt(a/M_PI)*pow(M_E, -a*x*x);
 	}

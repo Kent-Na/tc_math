@@ -49,6 +49,10 @@ namespace cd{
 		return complex(l.re+r.re, l.im+r.im);
 	}
 
+	inline complex& operator += (complex &l, const complex &r){
+		return l = l+r;
+	}
+
 	inline complex operator - (const complex &l, const complex &r){
 		return complex(l.re-r.re, l.im-r.im);
 	}
