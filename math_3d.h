@@ -62,6 +62,14 @@ namespace cd{
 		return vector3(+l.v0, +l.v1, +l.v2);
 	}
 
+	inline vector3 operator + (const vector3 &l, const vector3 &r){
+		return vector3(l.v0+r.v0, l.v1+r.v1, l.v2+r.v2);
+	}
+
+	inline vector3 operator - (const vector3 &l, const vector3 &r){
+		return vector3(l.v0-r.v0, l.v1-r.v1, l.v2-r.v2);
+	}
+
 	inline vector3 operator * (const vector3 &l, const double &r){
 		return vector3(l.v0*r, l.v1*r, l.v2*r);
 	}

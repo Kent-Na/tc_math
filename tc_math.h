@@ -5,6 +5,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "math_nd.h"
 #include "math_2d.h"
 #include "math_3d.h"
 #include "complex.h"
