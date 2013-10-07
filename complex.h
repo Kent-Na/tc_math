@@ -85,4 +85,8 @@ namespace cd{
 	inline complex& operator *= (complex &l, const double &r){
 		return (l = (l*r));
 	}
+
+	inline complex operator / (const complex &l, const double&r){
+		return complex(l.re/r, l.im/r);
+	}
 }
